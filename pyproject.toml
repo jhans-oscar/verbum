@@ -4,14 +4,30 @@ version = "0.1.0"
 description = "A Rich-powered CLI companion for exploring the King James Version Bible"
 readme = "README.md"
 license = { file = "LICENSE" }
-authors = [{ name = "Jhans Oscar", email = "jhansoscar@icloud.com" }]
+authors = [
+    { name = "Jhans Oscar Alonso Gonzalez", email = "jhansoscar@icloud.com" }
+]
 requires-python = ">=3.9"
 dependencies = ["rich"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Religion",
+    "Topic :: Text Processing :: Linguistic",
+]
 
 [project.urls]
-Homepage = "https://github.com/jhans-oscar/verbum-project"
-Documentation = "https://github.com/jhans-oscar/verbum-project#readme"
-Issues = "https://github.com/jhans-oscar/verbum-project/issues"
+Homepage = "https://github.com/jhans-oscar/verbum"
+Documentation = "https://github.com/jhans-oscar/verbum#readme"
+Issues = "https://github.com/jhans-oscar/verbum/issues"
+Changelog = "https://github.com/jhans-oscar/verbum/blob/main/CHANGELOG.md"
+
+[project.scripts]
+verbum = "verbum.cli.main:main"
 
 [build-system]
 requires = ["setuptools", "wheel"]

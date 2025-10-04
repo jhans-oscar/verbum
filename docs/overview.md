@@ -6,7 +6,7 @@ Verbum is a terminal-first companion for reading the King James Version (KJV) Bi
 ## Data Flow
 User Input -> Reference Parser -> Bible IO -> Reader -> CLI Output
 
-```
+```text
 +------------+    +------------------+    +---------------+    +-------------+    +-----------+
 | User Input | -> | Reference Parser | -> | Bible IO      | -> | Reader      | -> | CLI Output|
 +------------+    +------------------+    +---------------+    +-------------+    +-----------+
@@ -28,7 +28,7 @@ User Input -> Reference Parser -> Bible IO -> Reader -> CLI Output
 **verbum/core/formatting.py** - Converts verse numbers into superscripts and composes the display strings reused across rendering paths.
 
 ## Example Session
-```
+```text
 $ verbum
 Verbum CLI - type a reference (e.g., 'Genesis 1' or 'Exodus 2:1-10'). Type ':help' or ':quit'.
 
