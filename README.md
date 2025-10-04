@@ -20,7 +20,7 @@ Verbum is a Rich-powered command-line companion for exploring the King James Ver
 
 Verbum targets Python 3.9 or newer.
 
-### From PyPI (recommended once published)
+### From PyPI
 
 ```bash
 pip install verbum
