@@ -1,4 +1,4 @@
-# Verbum
+# Verbum Bible Reader
 
 Verbum is a Rich-powered command-line companion for exploring the King James Version (KJV) Bible from your terminal. It supports quick lookups of chapters, single verses, and verse ranges while keeping track of where you left off.
 
