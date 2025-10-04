@@ -1,6 +1,5 @@
-# Verbum
+# Verbum - Bible Reader
 
-[![PyPI - Version](https://img.shields.io/pypi/v/verbum.svg?label=PyPI)](https://pypi.org/project/verbum/)
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/github/license/jhans-oscar/verbum.svg)](LICENSE)
 
@@ -19,12 +18,6 @@ Verbum is a Rich-powered command-line companion for exploring the King James Ver
 ## Installation
 
 Verbum targets Python 3.9 or newer.
-
-### From PyPI
-
-```bash
-pip install verbum
-```
 
 ### From GitHub
 
