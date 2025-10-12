@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "verbum"
+version = "0.2.0"
+description = "Verbum: a concise, Rich-powered Bible CLI."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Jhans Oscar" }
+]
+license = "MIT"
+dependencies = [
+  "rich>=13.0"
+]
+keywords = ["bible", "cli", "scripture", "terminal", "rich"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "Topic :: Utilities"
+]
+
+[project.urls]
+Homepage = "https://example.com/verbum"
+Repository = "https://example.com/verbum/repo"
+
+[project.scripts]
+verbum = "verbum.cli.main:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["verbum*"]
+
+[tool.setuptools.package-data]
+verbum = ["data/*.json"]
+
