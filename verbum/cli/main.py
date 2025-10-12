@@ -42,47 +42,19 @@ You can enter any reference directly:
 
 @dataclass
 class NavigationState:
-    """
-    Track the last passage rendered to the user.
-    Args:
-        book (str | None): Canonical book currently in view.
-        chapter (int | None): Chapter index associated with the view.
-        verse (int | None): Verse index or None when a whole chapter is shown.
-    Returns:
-        NavigationState: Instances expose navigation context for :next/:prev.
-    """
     book: str | None = None
     chapter: int | None = None
     verse: int | None = None
 
     def is_ready(self) -> bool:
-        """
-        Report whether a book and chapter have been stored.
-        Returns:
-            bool: True when navigation has enough context to move sequentially.
-        """
         return self.book is not None and self.chapter is not None
 
     def update(self, book: str, chapter: int, verse: int | None) -> None:
-        """
-        Store a complete reference snapshot.
-        Args:
-            book (str): Canonical book name to record.
-            chapter (int): Chapter index associated with the current selection.
-            verse (int | None): Verse index or None for chapter-level navigation.
-        Returns:
-            None: The navigation state is mutated in place.
-        """
         self.book = book
         self.chapter = chapter
         self.verse = verse
 
     def reset(self) -> None:
-        """
-        Clear any remembered navigation context.
-        Returns:
-            None: All tracked reference values are reset to None.
-        """
         self.book = self.chapter = self.verse = None
 
     def store(
@@ -91,36 +63,17 @@ class NavigationState:
         chapter: int,
         verse: int | tuple[int, int] | None,
     ) -> None:
-        """
-        Persist a reference, collapsing ranges to a single verse when possible.
-        Args:
-            book (str): Book name to retain for navigation.
-            chapter (int): Chapter index paired with the book.
-            verse (int | tuple[int, int] | None): Verse number, tuple range, or None.
-        Returns:
-            None: Updates internal fields for the next navigation command.
-        """
         stored_verse = verse[1] if isinstance(verse, tuple) else verse
         self.update(book, chapter, stored_verse)
 
 
 def show_welcome() -> None:
-    """
-    Present the warm-up preamble followed by the framed banner.
-    Returns:
-        None: Output is written directly through the console.
-    """
     console.print("[dim][italic]Initializing...[/italic][/dim]")
     time.sleep(0.3)
     console.print(Panel.fit(BANNER, border_style="gold1"))
 
 
 def show_help() -> None:
-    """
-    Display the command reference in a styled panel.
-    Returns:
-        None: Help text is printed through the shared console instance.
-    """
     console.print(Panel.fit(HELP_TEXT, border_style="blue"))
 
 
@@ -243,3 +196,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+# Step 3: CLI to depend on CommandRouter and injected services
+# Step 3a: Orchestrate input/output only; move logic to services
+# Step 3b: Keep CLI surface stable while refactor proceeds under-the-hood

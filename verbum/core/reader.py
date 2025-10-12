@@ -105,3 +105,6 @@ def get_passage(bible: Bible, reference: str) -> str:
     verse_text = find_text(bible, book, chapter, verse)
     reference_label = f"{book} {chapter}:{verse}"
     return render_passage(reference_label, [verse_text])
+# Step 2: Reader to use PassageAssembler service and ReferenceParser
+# Step 2a: Rendering responsibilities to move into dedicated formatter classes
+# Step 2b: Console side-effects to be contained in presentation layer

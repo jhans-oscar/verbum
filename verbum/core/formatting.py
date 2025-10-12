@@ -16,3 +16,5 @@ def format_verse(number: int, text: str) -> str:
         str: Formatted verse string ready for console output.
     """
     return f"{str(number).translate(SUPERSCRIPTS)} {text}"
+# Step 5: Formatting will be used by presentation-specific formatters (e.g., RichFormatter)
+# Step 5a: Keep helpers small and pure for reuse across interfaces

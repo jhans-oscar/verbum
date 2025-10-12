@@ -19,61 +19,9 @@ else:
     BIBLE_PATH = files("verbum.data") / "KJV.json"
 
 
-def open_bible() -> Bible:
-    """
-    Load the configured Bible dataset into memory.
-    Returns:
-        Bible: Nested mapping of books to chapter and verse text.
-    """
-    if hasattr(BIBLE_PATH, "is_file"):
-        exists = BIBLE_PATH.is_file()
-    else:
-        exists = Path(BIBLE_PATH).is_file()
-
-    if not exists:
-        raise FileNotFoundError(
-            f"Dataset not found. Verify your BIBLE_PATH setting: {BIBLE_PATH}"
-        )
-
-    with BIBLE_PATH.open("r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def get_chapter_count(bible: Bible, book: str) -> int:
-    """
-    Count the chapters available for a given book.
-    Args:
-        bible (Bible): Loaded Bible dataset.
-        book (str): Canonical book name to inspect.
-    Returns:
-        int: Number of chapters, or 0 when the book is missing.
-    """
-    return len(bible.get(book, {}))
-
-
-def get_verse_count(bible: Bible, book: str, chapter: int) -> int:
-    """
-    Count the verses contained in a specific chapter.
-    Args:
-        bible (Bible): Loaded Bible dataset.
-        book (str): Canonical book name to inspect.
-        chapter (int): Chapter index within the selected book.
-    Returns:
-        int: Number of verses for the chapter, defaulting to 0 when missing.
-    """
-    book_data = bible.get(book, {})
-    return len(book_data.get(str(chapter), []))
 
 
 def get_next_book(bible: Bible, book: str) -> str | None:
-    """
-    Resolve the book that follows the supplied title.
-    Args:
-        bible (Bible): Loaded Bible dataset.
-        book (str): Canonical book name used as the starting point.
-    Returns:
-        str | None: Next book title or None when at the end of the canon.
-    """
     books = list(bible.keys())
     try:
         idx = books.index(book)
@@ -85,14 +33,6 @@ def get_next_book(bible: Bible, book: str) -> str | None:
 
 
 def get_prev_book(bible: Bible, book: str) -> str | None:
-    """
-    Resolve the book that precedes the supplied title.
-    Args:
-        bible (Bible): Loaded Bible dataset.
-        book (str): Canonical book name used as the starting point.
-    Returns:
-        str | None: Previous book title or None when at the beginning.
-    """
     books = list(bible.keys())
 
     try:
@@ -106,16 +46,6 @@ def get_prev_book(bible: Bible, book: str) -> str | None:
 
 
 def find_text(bible: Bible, book: str, chapter: int, verse: int) -> str:
-    """
-    Fetch the text of a single verse after validating bounds.
-    Args:
-        bible (Bible): Loaded Bible dataset.
-        book (str): Canonical book name to read from.
-        chapter (int): Chapter index expected to contain the verse.
-        verse (int): Verse index within the chapter.
-    Returns:
-        str: Verse text stripped of numbering artifacts.
-    """
     if book not in bible:
         raise ValueError(f"Unable to locate the book '{book}'.")
 
@@ -146,16 +76,6 @@ def pass_next(
     chapter: int,
     verse: int | None = None,
 ) -> tuple[str, int, int | None] | None:
-    """
-    Determine the next sequential reference.
-    Args:
-        bible (Bible): Loaded Bible dataset.
-        book (str): Current canonical book name.
-        chapter (int): Current chapter index.
-        verse (int | None): Current verse or None when on a whole chapter.
-    Returns:
-        tuple[str, int, int | None] | None: Next reference tuple or None at the end.
-    """
     if chapter is None:
         return None
 
@@ -225,3 +145,6 @@ def pass_prev(
         last_ch = get_chapter_count(bible, prev_book)
         return prev_book, last_ch, None
     return None
+# Step 1: Planned migration of data access into infrastructure/repositories/json_bible_repository.py
+# Step 1a: bible_io helpers will be wrapped or replaced by a BibleRepository interface.
+# Step 1b: Call sites in CLI/Reader to be rewired to use services that depend on the repository.
