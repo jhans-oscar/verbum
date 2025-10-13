@@ -1,0 +1,42 @@
+{% if passage %}
+<article class="passage-card" data-reference="{{ passage.reference }}">
+  <header class="passage-header">
+    <h2>{{ passage.reference }}</h2>
+    <span class="passage-count">{{ passage.verses|length }} verse{{ '' if passage.verses|length == 1 else 's' }}</span>
+  </header>
+  <ol class="verse-list">
+    {% for verse in passage.verses %}
+      <li class="verse-item">
+        {% if verse.number %}
+          <span class="verse-number">{{ verse.number }}</span>
+        {% endif %}
+        <span class="verse-text">{{ verse.text }}</span>
+      </li>
+    {% endfor %}
+  </ol>
+  <div class="nav-buttons">
+    <form class="nav-form"
+          action="{{ request.url_for('prev_passage') }}"
+          method="get"
+          hx-get="{{ request.url_for('prev_passage') }}"
+          hx-target="#passage"
+          hx-swap="innerHTML">
+      <input type="hidden" name="ref" value="{{ passage.reference }}">
+      <button type="submit">Previous</button>
+    </form>
+    <form class="nav-form"
+          action="{{ request.url_for('next_passage') }}"
+          method="get"
+          hx-get="{{ request.url_for('next_passage') }}"
+          hx-target="#passage"
+          hx-swap="innerHTML">
+      <input type="hidden" name="ref" value="{{ passage.reference }}">
+      <button type="submit">Next</button>
+    </form>
+  </div>
+</article>
+{% else %}
+<div class="passage-card empty">
+  <p>{{ error if error else "No passage selected yet." }}</p>
+</div>
+{% endif %}
