@@ -14,6 +14,7 @@ HELP_TEXT = """[bold gold1]Available commands[/bold gold1]
 [bold]:prev[/bold]    Return to the previous passage
 [bold]:help[/bold]    Show this list
 [bold]:quit[/bold], [bold]q[/bold]    Exit Verbum
+[bold]:search [word][/bold]   Search for a word or phrase
 
 You can enter any reference directly:
   [italic]John 3:16[/italic] — single verse
@@ -88,6 +89,29 @@ def main():
             except StartOfBibleError:
                 console.print("\n[red]You’re at the beginning of the Bible.[/red]\n")
             continue
+
+        elif cmd.startswith("search"):
+            parts = user_input.split(maxsplit=1)
+            if len(parts) == 1:
+                console.print("[red]Usage:[/red] :search [word or phrase]")
+                continue
+
+            query = parts[1].strip()
+            results = repo.search(query)
+
+            if not results:
+                console.print(f"[dim]No results found for '{query}'.[/dim]")
+                continue
+
+            console.print(f"[bold cyan]🔍 Search results for '{query}'[/bold cyan]")
+            for r in results:
+                console.print(
+                    f"[gold1]{r['book']} {r['chapter']}:{r['verse']}[/gold1] "
+                    f"- {r['text']}"
+                )
+            console.rule()
+            continue
+                
 
 
         try:

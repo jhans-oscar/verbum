@@ -8,25 +8,32 @@ version = "0.2.0"
 description = "Verbum: a concise, Rich-powered Bible CLI."
 readme = "README.md"
 requires-python = ">=3.10"
+
 authors = [
   { name = "Jhans Oscar" }
 ]
+
+# 🟢 SPDX-compliant license expression (PEP 639)
 license = "MIT"
+
 dependencies = [
   "rich>=13.0"
 ]
+
 keywords = ["bible", "cli", "scripture", "terminal", "rich"]
+
+# 🟢 Removed the old license classifier — rest are fine
 classifiers = [
   "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
   "Environment :: Console",
   "Intended Audience :: End Users/Desktop",
   "Topic :: Utilities"
 ]
 
 [project.urls]
-Homepage = "https://example.com/verbum"
-Repository = "https://example.com/verbum/repo"
+Homepage = "https://github.com/jhans-oscar/verbum"
+Repository = "https://github.com/jhans-oscar/verbum"
 
 [project.scripts]
 verbum = "verbum.cli.main:main"
@@ -40,4 +47,3 @@ include = ["verbum*"]
 
 [tool.setuptools.package-data]
 verbum = ["data/*.json"]
-

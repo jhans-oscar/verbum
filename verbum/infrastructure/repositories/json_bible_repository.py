@@ -58,3 +58,23 @@ class JsonBibleRepository(BibleRepository):
                 raise ValueError(f"Invalid chapter number {chapter} for book {book}")
         raise ValueError(f"Book not found: {book}")
 
+    def search(self, query: str, max_results: int = 20) -> list[dict]:
+        query = query.lower()
+        results = []
+
+        for book in self.data["books"]:
+            book_name = book["name"]
+            for chapter_data in book["chapters"]:
+                chap = chapter_data["chapter"]
+                for verse in chapter_data["verses"]:
+                    text = verse["text"]
+                    if query in text.lower():
+                        results.append({
+                            "book": book_name,
+                            "chapter": chap,
+                            "verse": verse["verse"],
+                            "text": text.strip()
+                        })
+                        if len(results) >= max_results:
+                            return results
+        return results
