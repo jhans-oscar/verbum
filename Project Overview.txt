@@ -1,0 +1,52 @@
+# Project Overview
+
+## Mission & Current Status
+- **Project**: Verbum — a scripture exploration tool being expanded from a Rich-powered CLI (v0.2.0) into a browser-based experience.
+- **Goal**: Provide fast Bible lookup, navigation, and keyword search backed by a reusable service layer and JSON datasets.
+- **Progress**: Mature CLI packaged for installation; new FastAPI + HTMX web frontend delivers interactive search/read flows but still shares packaging/runtime with the CLI informally.
+
+## High-Level Architecture
+- **Domain layer (`verbum/domain`)**: `Reference` class parses and serializes book/chapter/verse inputs; central to both CLI and web.
+- **Core services (`verbum/core`)**: `BibleService` wraps repository access to format passages, traverse to next/previous locations, and suggest closest book names; `normalizer` cleans raw user strings prior to parsing.
+- **Infrastructure (`verbum/infrastructure`)**: `BibleRepository` interface plus `JsonBibleRepository` concrete loader (reads bundled JSON via `importlib.resources`). Supplies book/chapter/verse metadata and keyword search.
+- **Data (`verbum/data`)**: Bundled translations (`KJV.json`, `ACV.json`). KJV is the default used by both interfaces.
+- **Presentation layers**:
+  - **CLI (`verbum/cli/main.py`)**: Rich console loop with commands `:next`, `:prev`, `:search`, `:help`, `:quit`.
+  - **Web (`verbum_web`)**: FastAPI app serving HTML (Jinja2) + JSON. HTMX augments the single-page form for progressive enhancement.
+
+## Web Application Snapshot
+- **Entry point**: `verbum_web/main.py` instantiates FastAPI, mounts static assets, and exposes:
+  - `GET /` — renders main search page (`index.html`).
+  - `GET /read`, `/read/{book}/{chapter}`, `/read/{book}/{chapter}/{verses}`, `/range/...` — load passages; support HTMX partials and JSON clients.
+  - `GET /next`, `/prev` — navigation endpoints mirroring CLI behavior.
+  - `GET /lookup` — dual-purpose JSON API; returns normalized passage or grouped keyword matches with pagination info.
+  - `GET /search` — server-rendered fallback/partial for keyword search.
+- **Templating**:
+  - `templates/index.html` — minimal single-page layout with HTMX form posting to `/lookup` and client-side renderer to display JSON responses.
+  - `templates/partials/passage.html` and `partials/search.html` — fragment templates used when HTMX requests server-rendered updates.
+- **Static assets**: `static/style.css` provides cohesive branding, responsive layout, and component styling.
+- **Dependencies**: `fastapi`, `uvicorn`, `htmx` (via CDN), uses same `BibleService` + `JsonBibleRepository` as CLI.
+- **Open considerations**: No dedicated package metadata; app runs via `uvicorn verbum_web.main:app`. Shared state uses default KJV data; no caching/pagination beyond in-memory list slicing; error handling already HTMX-aware.
+
+## CLI Application Snapshot
+- **Entry**: `verbum.cli.main:main` (exposed as the `verbum` console script via `pyproject.toml`).
+- **Flow**: Prompt loop normalizes references, delegates to `BibleService`, prints formatted verse lists with Rich rules and colors.
+- **Commands**: Supports sequential navigation, keyword search (via repository `search`), and contextual help text.
+- **Packaging**: `pyproject.toml` defines wheel metadata, MIT license, and runtime dependency `rich>=13`. Data files shipped through `importlib.resources`.
+
+## Testing & Tooling
+- **Tests**: `verbum/test/test_reference.py` (parsing accuracy) and `test_cli_flow.py` (happy-path console interactions using dummy repo). No automated coverage for FastAPI layer yet.
+- **Tooling**: Targets Python 3.10+. Development workflow uses `pytest`. Web app dependencies tracked separately in `verbum_web/requirements.txt`.
+
+## Developer Notes / Next Steps
+1. **Consolidate packaging**: Decide whether web app should live in same distribution or separate project; align dependencies and documentation.
+2. **API hardening**: Add automated tests for FastAPI endpoints (reference normalization, navigation boundary cases, keyword pagination).
+3. **Dataset strategy**: Consider configuration/env support for switching translations outside CLI (web currently hardcodes KJV).
+4. **UX enhancements**: Improve empty-state flows, expose pagination controls via HTMX partials, and integrate partial rendering into main page.
+5. **Documentation**: Update `README.md`/`CHANGELOG.md` to reflect web interface, deployment steps, and architectural overview.
+
+## Quick Start Commands
+- **CLI**: `pip install -e .` → `verbum` or `python -m verbum.cli.main`.
+- **Web**: From repo root `pip install -r verbum_web/requirements.txt` → `uvicorn verbum_web.main:app --reload`.
+- **Tests**: `pytest`.
+
