@@ -4,7 +4,6 @@ from verbum.domain.reference import Reference
 from verbum.infrastructure.repositories.bible_repository import BibleRepository
 
 console = Console()
-
 class EndOfBibleError(Exception):
     pass
 
@@ -125,5 +124,15 @@ class BibleService:
         
         console.print(f"[yellow]⚠️  Unknown book '{user_book}'.[/yellow]")
         return user_book
+    
+    def summarize_search(self, query: str) -> dict[str, int]:
+        results = self.repo.search(query, 10000)
+        counts = {}
+        for r in results:
+            book = r["book"]
+            counts[book] = counts.get(book, 0) + 1
+        return counts
+
+
         
 

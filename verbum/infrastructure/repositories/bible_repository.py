@@ -17,3 +17,7 @@ class BibleRepository(ABC):
     @abstractmethod
     def verse_count(self, book: str, chapter: int) -> int:
         pass
+
+    @abstractmethod
+    def search(self, query: str) -> list[dict]:
+        pass
