@@ -5,15 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "verbum"
 version = "0.3.0"
-description = "Verbum: a concise, Rich-powered Bible CLI."
+description = "Verbum is a Rich-powered command-line and API tool for reading, searching, and exploring the Bible interactively."
 readme = "README.md"
 requires-python = ">=3.10"
 
 authors = [
-  { name = "Jhans Oscar" }
+  { name = "Jhans Oscar", email = "jhansoscar@icloud.com" }
 ]
 
-# 🟢 SPDX-compliant license expression (PEP 639)
 license = "MIT"
 
 dependencies = [
@@ -26,7 +25,6 @@ dependencies = [
 
 keywords = ["bible", "cli", "scripture", "terminal", "rich"]
 
-# 🟢 Removed the old license classifier — rest are fine
 classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent",
@@ -44,6 +42,7 @@ verbum = "verbum.cli.main:main"
 
 [tool.setuptools]
 include-package-data = true
+license-files = ["LICENSE"]
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -8,7 +8,7 @@ from verbum.core.factory import build_service
 from verbum.core.normalizer import normalize_reference_raw
 from verbum.domain.reference import Reference
 
-from api.models import ReferenceResponse, SearchResult, Verse, WordSearchResponse
+from models import ReferenceResponse, SearchResult, Verse, WordSearchResponse
 
 DATASET_NAME = "KJV.json"
 PAGE_SIZE_LIMIT = 100
