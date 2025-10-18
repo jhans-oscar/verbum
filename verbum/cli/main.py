@@ -1,10 +1,10 @@
-from importlib.resources import files
 from rich.console import Console
 from rich.prompt import Prompt
+
+from verbum.core.bible_service import EndOfBibleError, StartOfBibleError
+from verbum.core.factory import build_service
 from verbum.core.normalizer import normalize_reference_raw
 from verbum.domain.reference import Reference
-from verbum.infrastructure.repositories.json_bible_repository import JsonBibleRepository
-from verbum.core.bible_service import BibleService, StartOfBibleError, EndOfBibleError
 
 console = Console()
 
@@ -42,27 +42,28 @@ def render_passage(ref: Reference, text: str) -> None:
         ref_str = f"{ref.book} {ref.chapter}:{ref.verses[0]}-{ref.verses[-1]}"
 
     console.print(f"[dim]Current reference:[/dim] [bold yellow]{ref_str}[/bold yellow]")
-    console.print("[dim]Tips: :next, :prev, :help, :quit[/dim]\n")
+    console.print("[dim]Tips: :next, :search [word], :prev, :help, :quit[/dim]\n")
 
 
 def main():
-    data_path = files("verbum.data").joinpath("KJV.json")
-    repo = JsonBibleRepository(data_path)
-    service = BibleService(repo)
+    repo, service = build_service()
 
     console.print(BANNER)
     current_ref: Reference | None = None
     while True:
         user_input = Prompt.ask("[bold yellow]📖 Enter reference or command[/bold yellow]").strip()
-        cmd = user_input.strip().lower()
-        if cmd in {"quit", "exit", "q"}:
+        raw_cmd = user_input.strip()
+        cmd = raw_cmd.lower()
+        normalized = cmd.lstrip(":")
+
+        if normalized in {"quit", "exit", "q"}:
             break
-        
-        elif cmd in {"help", "h", "?"}:
+
+        elif normalized in {"help", "h", "?"}:
             console.print(HELP_TEXT)
             continue
 
-        elif cmd in {"next"}:
+        elif normalized == "next":
             if current_ref is None:
                 console.print("\n[magenta]No current passage loaded.[/magenta] Type something like [italic]Genesis 1[/italic].\n")
                 continue
@@ -76,7 +77,7 @@ def main():
                 console.print("\n[red]You’ve reached the end of the Bible.[/red]\n")
             continue
 
-        elif cmd in {"prev", "back"}:
+        elif normalized in {"prev", "back"}:
             if current_ref is None:
                 console.print("\n[magenta]No current passage loaded.[/magenta] Type something like [italic]Genesis 1[/italic].\n")
                 continue
@@ -90,8 +91,8 @@ def main():
                 console.print("\n[red]You’re at the beginning of the Bible.[/red]\n")
             continue
 
-        elif cmd.startswith("search"):
-            parts = user_input.split(maxsplit=1)
+        elif normalized.startswith("search"):
+            parts = normalized.split(maxsplit=1)
             if len(parts) == 1:
                 console.print("[red]Usage:[/red] :search [word or phrase]")
                 continue
@@ -115,7 +116,7 @@ def main():
 
 
         try:
-            clean = normalize_reference_raw(user_input)
+            clean = normalize_reference_raw(raw_cmd)
             ref = Reference.from_string(clean)
             ref.book = service.suggest_book(ref.book)
             text = service.get_passage_text(ref)

@@ -19,5 +19,5 @@ class BibleRepository(ABC):
         pass
 
     @abstractmethod
-    def search(self, query: str) -> list[dict]:
+    def search(self, query: str, limit: int | None = None) -> list[dict]:
         pass

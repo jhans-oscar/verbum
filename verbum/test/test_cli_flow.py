@@ -7,7 +7,6 @@ from rich.console import Console
 from verbum.cli import main as cli_main
 from verbum.core.bible_service import BibleService
 
-
 class DummyRepo:
     books = ["Genesis"]
 
@@ -35,6 +34,11 @@ class DummyRepo:
             raise ValueError(f"Invalid chapter {chapter}")
         return 3
 
+    def search(self, query, limit=None):
+        return [
+            {"book": "Genesis", "chapter": 1, "verse": 1, "text": f"Result for {query}"}
+        ][:limit if limit else None]
+
 
 class _DummyFiles:
     def joinpath(self, _name):
@@ -45,9 +49,9 @@ class _DummyFiles:
 def patched_cli(monkeypatch):
     console = Console(record=True)
     monkeypatch.setattr(cli_main, "console", console)
-    monkeypatch.setattr(cli_main, "files", lambda *_args, **_kwargs: _DummyFiles())
-    monkeypatch.setattr(cli_main, "JsonBibleRepository", lambda _path: DummyRepo())
-    monkeypatch.setattr(cli_main, "BibleService", lambda repo: BibleService(repo))
+    repo = DummyRepo()
+    service = BibleService(repo)
+    monkeypatch.setattr(cli_main, "build_service", lambda: (repo, service))
     return console
 
 
