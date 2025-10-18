@@ -2,6 +2,8 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![PyPI version](https://img.shields.io/pypi/v/verbum-cli.svg)](https://pypi.org/project/verbum-cli/)
+
 
 Verbum is a Rich-powered Bible companion that now ships with both a colorful terminal experience and a lightweight JSON API. Version 0.3.0 introduces full-text search, consistent pagination, and a shared service layer between the CLI and FastAPI app.
 
