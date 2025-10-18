@@ -5,6 +5,8 @@
 
 Verbum is a Rich-powered Bible companion that now ships with both a colorful terminal experience and a lightweight JSON API. Version 0.3.0 introduces full-text search, consistent pagination, and a shared service layer between the CLI and FastAPI app.
 
+![How to use](docs/images/usage.gif)
+
 ## Features
 - Instant lookups for single verses, verse ranges, or entire chapters.
 - Keyword search via the `:search` CLI command and the `/lookup` API endpoint.
@@ -72,7 +74,7 @@ Romans 4:4 - Now to him that worketh is the reward not reckoned of grace, but of
 ...
 ```
 
-![CLI search screenshot](docs/images/cli-search.png)
+![CLI search screenshot](docs/images/cli-search.gif)
 
 #### API (`GET /lookup?q=faith&book=Romans&page_size=5`)
 
