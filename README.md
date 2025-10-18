@@ -20,17 +20,13 @@ Verbum is a Rich-powered Bible companion that now ships with both a colorful ter
 Requires Python 3.10 or newer.
 
 ```bash
-pip install -e .
-# Once published to PyPI:
-# pip install verbum
+pip install verbum-cli
 ```
 
 ### Run the CLI
 
 ```bash
 verbum
-# or
-python -m verbum.cli.main
 ```
 
 ### Run the API
@@ -74,7 +70,10 @@ Romans 4:4 - Now to him that worketh is the reward not reckoned of grace, but of
 ...
 ```
 
+---
+
 ![CLI search screenshot](docs/images/cli-search.gif)
+
 
 #### API (`GET /lookup?q=faith&book=Romans&page_size=5`)
 
