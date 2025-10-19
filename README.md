@@ -122,4 +122,9 @@ Pull requests are welcome. Please include tests for new features or fixes.
 
 ## License
 
-MIT
+Verbum is distributed under the **Business Source License 1.1 (BSL 1.1)**.  
+- Free for personal, educational, or internal use.  
+- Commercial or production use requires a license from the author.  
+- On **May 20, 2030**, this project will become available under the MIT License.  
+
+© 2025 Jhans Oscar Alonso Gonzales. All rights reserved.
